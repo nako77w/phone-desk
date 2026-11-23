@@ -1,0 +1,135 @@
+<Window
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ Title="Точка связи" Width="1100" Height="740" MinWidth="810" MinHeight="590"
+ WindowStartupLocation="CenterScreen" Background="#101522" Foreground="#E9EFFC" FontFamily="Segoe UI" FontSize="14">
+ <Window.Resources>
+  <SolidColorBrush x:Key="Panel" Color="#1C2436"/>
+  <SolidColorBrush x:Key="Muted" Color="#B4BFD6"/>
+  <SolidColorBrush x:Key="Accent" Color="#BDF26D"/>
+  <Style TargetType="Button">
+   <Setter Property="Background" Value="#2B3851"/><Setter Property="Foreground" Value="#F2F6FF"/>
+   <Setter Property="Padding" Value="14,8"/><Setter Property="Margin" Value="0,0,8,0"/>
+   <Setter Property="Cursor" Value="Hand"/><Setter Property="BorderThickness" Value="0"/>
+   <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button">
+    <Border x:Name="Surface" Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+     <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Center"/>
+    </Border>
+    <ControlTemplate.Triggers>
+     <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Surface" Property="Opacity" Value=".82"/></Trigger>
+     <Trigger Property="IsEnabled" Value="False"><Setter TargetName="Surface" Property="Opacity" Value=".35"/></Trigger>
+    </ControlTemplate.Triggers>
+   </ControlTemplate></Setter.Value></Setter>
+  </Style>
+  <Style x:Key="Nav" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+   <Setter Property="HorizontalContentAlignment" Value="Left"/><Setter Property="Margin" Value="0,0,0,7"/>
+   <Setter Property="Padding" Value="14,11"/><Setter Property="Background" Value="Transparent"/>
+  </Style>
+  <Style TargetType="CheckBox"><Setter Property="Foreground" Value="#E9EFFC"/><Setter Property="Margin" Value="0,7,16,7"/></Style>
+  <Style TargetType="ListBox">
+   <Setter Property="Background" Value="#182133"/><Setter Property="Foreground" Value="#E9EFFC"/>
+   <Setter Property="BorderThickness" Value="0"/><Setter Property="Padding" Value="8"/>
+   <Setter Property="ItemContainerStyle"><Setter.Value><Style TargetType="ListBoxItem">
+    <Setter Property="Padding" Value="11,8"/><Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+   </Style></Setter.Value></Setter>
+  </Style>
+ </Window.Resources>
+ <Grid>
+  <Grid.ColumnDefinitions><ColumnDefinition Width="224"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+  <Border Background="#171F2F" Padding="20">
+   <DockPanel LastChildFill="True">
+    <StackPanel DockPanel.Dock="Bottom">
+     <Button x:Name="PairButton" Content="Подключить телефон" Background="{StaticResource Accent}" Foreground="#172210" Margin="0"/>
+    </StackPanel>
+    <StackPanel>
+     <TextBlock Text="Точка связи" FontSize="26" FontWeight="Bold" Margin="0,6,0,2"/>
+     <TextBlock Text="Телефон и ноутбук" Foreground="{StaticResource Muted}" Margin="0,0,0,30"/>
+     <Button x:Name="HomeNav" Content="Обзор" Tag="Home" Style="{StaticResource Nav}"/>
+     <Button x:Name="AppsNav" Content="Приложения" Tag="Apps" Style="{StaticResource Nav}"/>
+     <Button x:Name="FilesNav" Content="Файлы" Tag="Files" Style="{StaticResource Nav}"/>
+     <Button x:Name="PhotosNav" Content="Фото" Tag="Photos" Style="{StaticResource Nav}"/>
+     <Button x:Name="SettingsNav" Content="Настройки" Tag="Settings" Style="{StaticResource Nav}"/>
+    </StackPanel>
+   </DockPanel>
+  </Border>
+  <Grid Grid.Column="1" Margin="28,22,28,18">
+   <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+   <DockPanel Margin="0,0,0,15" LastChildFill="True">
+    <Button x:Name="RefreshButton" DockPanel.Dock="Right" Content="Обновить" Margin="9,0,0,0"/>
+    <ComboBox x:Name="DevicePicker" MinHeight="32" DisplayMemberPath="Label" AutomationProperties.Name="Подключённые телефоны"/>
+   </DockPanel>
+   <Grid Grid.Row="1">
+    <StackPanel x:Name="HomePage">
+     <TextBlock Text="Обзор" FontSize="32" FontWeight="Bold" Margin="0,1,0,15"/>
+     <Border Background="{StaticResource Panel}" CornerRadius="18" Padding="24">
+      <StackPanel>
+       <TextBlock x:Name="DeviceTitle" Text="Подключите Android" FontSize="25" FontWeight="SemiBold" TextWrapping="Wrap"/>
+       <TextBlock x:Name="DeviceDetails" Text="Для первого подключения откройте QR-код и отсканируйте его в настройках телефона." Foreground="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,8,0,19"/>
+       <WrapPanel>
+        <Button x:Name="ScreenButton" Content="Открыть экран" Background="{StaticResource Accent}" Foreground="#172210"/>
+        <Button x:Name="ShotButton" Content="Снимок экрана"/>
+       </WrapPanel>
+      </StackPanel>
+     </Border>
+     <TextBlock Text="Быстрый доступ" FontSize="19" FontWeight="SemiBold" Margin="0,24,0,12"/>
+     <WrapPanel>
+      <Button x:Name="AppsQuick" Content="Мобильные приложения" Tag="Apps"/>
+      <Button x:Name="FilesQuick" Content="Файлы телефона" Tag="Files"/>
+      <Button x:Name="PhotosQuick" Content="Фото телефона" Tag="Photos"/>
+     </WrapPanel>
+     <TextBlock Text="В окне телефона: Ctrl+V — вставить текст, левый Alt+C — скопировать, левый Alt+N — открыть уведомления." Foreground="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,25,0,0"/>
+    </StackPanel>
+    <DockPanel x:Name="AppsPage" Visibility="Collapsed">
+     <TextBlock DockPanel.Dock="Top" Text="Приложения" FontSize="32" FontWeight="Bold" Margin="0,1,0,15"/>
+     <Grid DockPanel.Dock="Top" Margin="0,0,0,12">
+      <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+      <TextBox x:Name="AppSearch" Padding="9,6" VerticalContentAlignment="Center" ToolTip="Поиск по имени или пакету" AutomationProperties.Name="Поиск приложений"/>
+      <CheckBox Grid.Column="1" x:Name="FavoritesOnly" Content="Избранное" Margin="12,7"/>
+      <Button Grid.Column="2" x:Name="LoadAppsButton" Content="Считать список" Margin="0"/>
+     </Grid>
+     <WrapPanel DockPanel.Dock="Bottom" Margin="0,12,0,0">
+      <Button x:Name="OpenAppButton" Content="Открыть" Background="{StaticResource Accent}" Foreground="#172210"/>
+      <Button x:Name="FavoriteButton" Content="Избранное"/>
+     </WrapPanel>
+     <ListBox x:Name="AppList" DisplayMemberPath="Label"/>
+    </DockPanel>
+    <DockPanel x:Name="FilesPage" Visibility="Collapsed">
+     <TextBlock DockPanel.Dock="Top" Text="Файлы телефона" FontSize="32" FontWeight="Bold" Margin="0,1,0,15"/>
+     <WrapPanel DockPanel.Dock="Top" Margin="0,0,0,10">
+      <Button x:Name="ParentButton" Content="На уровень выше"/>
+      <Button x:Name="ListFilesButton" Content="Обновить папку"/>
+      <Button x:Name="UploadButton" Content="Отправить файл"/>
+      <Button x:Name="DownloadButton" Content="Скачать выбранное"/>
+     </WrapPanel>
+     <TextBlock DockPanel.Dock="Top" x:Name="FolderText" Foreground="{StaticResource Muted}" Margin="0,0,0,8" TextTrimming="CharacterEllipsis"/>
+     <ListBox x:Name="FileList" DisplayMemberPath="Label"/>
+    </DockPanel>
+    <DockPanel x:Name="PhotosPage" Visibility="Collapsed">
+     <TextBlock DockPanel.Dock="Top" Text="Фото" FontSize="32" FontWeight="Bold" Margin="0,1,0,15"/>
+     <WrapPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+      <Button x:Name="ListPhotosButton" Content="Найти фото и снимки"/>
+      <Button x:Name="SavePhotoButton" Content="Сохранить фото"/>
+     </WrapPanel>
+     <Grid>
+      <Grid.ColumnDefinitions><ColumnDefinition Width="5*"/><ColumnDefinition Width="7*"/></Grid.ColumnDefinitions>
+      <ListBox x:Name="PhotoList" DisplayMemberPath="Label"/>
+      <Border Grid.Column="1" Background="{StaticResource Panel}" Padding="14" CornerRadius="12" Margin="12,0,0,0">
+       <Image x:Name="Preview" Stretch="Uniform" AutomationProperties.Name="Предпросмотр фото"/>
+      </Border>
+     </Grid>
+    </DockPanel>
+    <StackPanel x:Name="SettingsPage" Visibility="Collapsed">
+     <TextBlock Text="Настройки" FontSize="32" FontWeight="Bold" Margin="0,1,0,15"/>
+     <TextBlock Text="Окно Android" FontSize="19" FontWeight="SemiBold" Margin="0,0,0,8"/>
+     <CheckBox x:Name="ClipboardBox" Content="Общий текстовый буфер" IsChecked="True"/>
+     <CheckBox x:Name="FullscreenBox" Content="Полноэкранный режим"/>
+     <CheckBox x:Name="GameModeBox" Content="Режим игры: физическая клавиатура, до 60 кадров/с"/>
+     <CheckBox x:Name="GamepadBox" Content="Передавать сигналы геймпада"/>
+     <TextBlock Text="Настройки применяются при открытии нового окна Android." Foreground="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,12,0,18"/>
+     <Button x:Name="JoystickButton" Content="Настроить экранный джойстик WASD" HorizontalAlignment="Left"/>
+    </StackPanel>
+   </Grid>
+   <TextBlock Grid.Row="2" x:Name="Status" Text="Поиск телефона…" Foreground="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,15,0,0" MinHeight="33"/>
+  </Grid>
+ </Grid>
+</Window>

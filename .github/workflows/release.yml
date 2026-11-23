@@ -1,0 +1,36 @@
+name: Windows release
+on:
+  push:
+    tags: ['v*.*.*']
+permissions:
+  contents: write
+jobs:
+  package:
+    runs-on: windows-2022
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Find Inno Setup
+        shell: pwsh
+        run: |
+          $iscc = Join-Path ${env:ProgramFiles(x86)} 'Inno Setup 6/ISCC.exe'
+          if (-not (Test-Path -LiteralPath $iscc)) {
+            choco install innosetup --yes --no-progress
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+          if (-not (Test-Path -LiteralPath $iscc)) { throw 'ISCC.exe unavailable' }
+          "PHONE_DESK_ISCC=$iscc" >> $env:GITHUB_ENV
+      - name: Build and test
+        shell: pwsh
+        run: |
+          $version = $env:GITHUB_REF_NAME.TrimStart('v')
+          ./scripts/Build-Release.ps1 -Version $version -Compiler $env:PHONE_DESK_ISCC
+      - name: Publish downloads
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create $env:GITHUB_REF_NAME dist/PhoneDesk-Setup-x64.exe dist/PhoneDesk-Portable-x64.zip dist/SHA256SUMS.txt --verify-tag --title "Точка связи $env:GITHUB_REF_NAME" --notes-file RELEASE-NOTES.md
+          exit $LASTEXITCODE
