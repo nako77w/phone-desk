@@ -42,7 +42,7 @@ function Read-Window([string]$name) {
 
 $window = Read-Window 'MainWindow.xaml'
 $ui = @{}
-foreach ($name in ('DevicePicker,DeviceTitle,DeviceDetails,HomePage,AppsPage,FilesPage,PhotosPage,SettingsPage,ScreenButton,ShotButton,AppSearch,FavoritesOnly,LoadAppsButton,AppList,OpenAppButton,FavoriteButton,FileList,FolderText,ParentButton,ListFilesButton,UploadButton,DownloadButton,PhotoList,Preview,ListPhotosButton,SavePhotoButton,ClipboardBox,FullscreenBox,GameModeBox,GamepadBox,JoystickButton,Status,PairButton,RefreshButton,HomeNav,AppsNav,FilesNav,PhotosNav,SettingsNav,AppsQuick,FilesQuick,PhotosQuick' -split ',')) {
+foreach ($name in ('DevicePicker,DeviceTitle,DeviceDetails,HomePage,AppsPage,FilesPage,PhotosPage,SettingsPage,ScreenButton,ShotButton,AppSearch,FavoritesOnly,LoadAppsButton,AppList,OpenAppButton,FavoriteButton,FileList,FolderText,ParentButton,ListFilesButton,UploadButton,DownloadButton,PhotoList,Preview,ListPhotosButton,SavePhotoButton,ClipboardBox,FullscreenBox,GameModeBox,GamepadBox,JoystickButton,Status,PairButton,RefreshButton,HomeNav,AppsNav,FilesNav,PhotosNav,SettingsNav,BluetoothNav,AppsQuick,FilesQuick,PhotosQuick' -split ',')) {
     $ui[$name] = $window.FindName($name)
     if (-not $ui[$name]) { throw "Missing control: $name" }
 }
@@ -629,6 +629,7 @@ function Show-Page([string]$page) {
     if ($page -eq 'Files' -and $null -eq $ui.FileList.ItemsSource) { Read-Folder $script:folder }
 }
 
+$ui.BluetoothNav.Add_Click({ try { & (Join-Path $PSScriptRoot 'Bluetooth.ps1') } catch { Set-Status $_.Exception.Message } })
 $ui.PairButton.Add_Click({ try { Open-Pairing } catch { Set-Status $_.Exception.Message } })
 $ui.RefreshButton.Add_Click({
     $script:nextScan = [DateTime]::MinValue

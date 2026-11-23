@@ -48,6 +48,7 @@
      <Button x:Name="AppsNav" Content="Приложения" Tag="Apps" Style="{StaticResource Nav}"/>
      <Button x:Name="FilesNav" Content="Файлы" Tag="Files" Style="{StaticResource Nav}"/>
      <Button x:Name="PhotosNav" Content="Фото" Tag="Photos" Style="{StaticResource Nav}"/>
+     <Button x:Name="BluetoothNav" Content="Bluetooth" Style="{StaticResource Nav}"/>
      <Button x:Name="SettingsNav" Content="Настройки" Tag="Settings" Style="{StaticResource Nav}"/>
     </StackPanel>
    </DockPanel>
